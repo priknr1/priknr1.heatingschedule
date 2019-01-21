@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+
+<head>
+    <script type="text/javascript" src="/manager/webserver/assets/js/jquery.js"></script>
+    <script type=text/javascript src=/manager/webserver/assets/js/jquery.ui.js></script>
+    <script type=text/javascript src=/manager/webserver/assets/js/jquery.ui.touch-punch.js></script>
+    <script type=text/javascript src=/manager/api/assets/js/api.js></script>
+    <script type=text/javascript src=/manager/webserver/assets/js/jsrender.js></script>
+
+    <script type="text/javascript" src="../assets/settings.js"></script>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+
+<body>
+
+<div id="heating-schedule">
+    <h1 data-i18n="heating_schedule"></h1>
+
+    <fieldset id="bearer_token_form">
+        <legend data-i18n="bearer_token"></legend>
+        <label for="token"></label><input type="text" id="token"/>
+        <button id="submit_token" type="submit" data-i18n="save"></button>
+        <br/>
+        <small>
+            <small data-i18n="bearer_token_info"></small>
+            <br/><a href="javascript:void(0)" onclick="$('#bearerTokenAdvice').show()"
+                    data-i18n="bearer_token_link"></a>
+        </small>
+
+        <div id="bearerTokenAdvice">
+            <ol>
+                <li><span data-i18n="bearer_token_advice_go_to"></span> <a href="https://my.athom.com" target="_blank">my.athom.com</a></li>
+                <li data-i18n="bearer_token_advice_login"></li>
+                <li data-i18n="bearer_token_advice_copy_link"></li>
+                <li data-i18n="bearer_token_advice_paste_token"></li>
+            </ol>
+            <img src="../assets/images/bearer.jpg" alt=""/>
+            <div class="popup-close" onclick="$('#bearerTokenAdvice').hide()">✕</div>
+        </div>
+    </fieldset>
+
+    <div id="schedule-config">
+        <script id="zones-list-template" type="text/html">
+            <li class="zone" data-index="{{:index}}">
+                <a data-id="{{:id}}" class="{{if schedule_enabled}}schedule_enabled{{/if}}" href="javascript:void(0)">
+                    <span class="icon"
+                          style="-webkit-mask-image: url(/manager/zones/assets/icons/{{>icon}}.svg)"></span>
+                    <span class="name">{{:name}}</span>
+                    <em class="fa fa-chevron-right"></em>
+                </a>
+
+                {{if children.length}}
+                <ol>
+                    {{for children tmpl="#zones-list-template"/}}
+                </ol>
+                {{/if}}
+            </li>
+        </script>
+
+        <div id="zones">
+            <ol id="zones-list"></ol>
+        </div>
+
+        <div id="schedule">
+            <div id="schedule_toggle">
+                <input id="toggle_schedule" type="checkbox"/>
+                <label for="toggle_schedule" data-i18n="enable_heating_schedule"></label>
+            </div>
+
+            <div id="plan">
+                <ul id="days">
+                    <li><a class="enabled" href="javascript:void(0)" data-day="mo" data-i18n="monday"></a></li>
+                    <li><a href="javascript:void(0)" data-day="tu" data-i18n="tuesday"></a></li>
+                    <li><a href="javascript:void(0)" data-day="we" data-i18n="wednesday"></a></li>
+                    <li><a href="javascript:void(0)" data-day="th" data-i18n="thursday"></a></li>
+                    <li><a href="javascript:void(0)" data-day="fr" data-i18n="friday"></a></li>
+                    <li><a href="javascript:void(0)" data-day="sa" data-i18n="saturday"></a></li>
+                    <li><a href="javascript:void(0)" data-day="su" data-i18n="sunday"></a></li>
+                </ul>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th data-i18n="daytime"></th>
+                        <th data-i18n="time"></th>
+                        <th data-i18n="temperature"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="morning">
+                        <td data-i18n="daytime_morning"></td>
+                        <td><select class="hour"></select> : <select class="minute"></select></td>
+                        <td><select class="temperature"></select></td>
+                    </tr>
+                    <tr id="day">
+                        <td data-i18n="daytime_day"></td>
+                        <td><select class="hour"></select> : <select class="minute"></select></td>
+                        <td><select class="temperature"></select></td>
+                    </tr>
+                    <tr id="evening">
+                        <td data-i18n="daytime_evening"></td>
+                        <td><select class="hour"></select> : <select class="minute"></select></td>
+                        <td><select class="temperature"></select></td>
+                    </tr>
+                    <tr id="night">
+                        <td data-i18n="daytime_night"></td>
+                        <td><select class="hour"></select> : <select class="minute"></select></td>
+                        <td><select class="temperature"></select></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <small data-i18n="temperature_hint"></small>
+
+                <ol id="copy">
+                    <li class="title" data-i18n="copy_settings"></li>
+                    <li class="mo"><a href="javascript:copyConfig('mo')"><span data-i18n="mo"></span><em
+                            class="fa fa-check"></em></a></li>
+                    <li class="tu"><a href="javascript:copyConfig('tu')"><span data-i18n="tu"></span><em
+                            class="fa fa-check"></em></a></li>
+                    <li class="we"><a href="javascript:copyConfig('we')"><span data-i18n="we"></span><em
+                            class="fa fa-check"></em></a></li>
+                    <li class="th"><a href="javascript:copyConfig('th')"><span data-i18n="th"></span><em
+                            class="fa fa-check"></em></a></li>
+                    <li class="fr"><a href="javascript:copyConfig('fr')"><span data-i18n="fr"></span><em
+                            class="fa fa-check"></em></a></li>
+                    <li class="sa"><a href="javascript:copyConfig('sa')"><span data-i18n="sa"></span><em
+                            class="fa fa-check"></em></a></li>
+                    <li class="su"><a href="javascript:copyConfig('su')"><span data-i18n="su"></span><em
+                            class="fa fa-check"></em></a></li>
+                </ol>
+
+                <h4 id="thermostats_headline" data-i18n="thermostats"></h4>
+                <script id="thermostats-template" type="text/html">
+                    <li class="{{if disabled}}disabled{{/if}}">
+                    <span class="icon"
+                          style="-webkit-mask-image: url({{>icon}})"></span>
+                        <span class="name">{{:name}}</span>
+                    </li>
+                </script>
+
+                <div id="thermostats">
+                    <ul id="thermostats-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="log">
+        <h1>Log</h1>
+        <pre id="log-output"></pre>
+    </div>
+</div>
+
+</body>
+
+</html>

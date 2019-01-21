@@ -1,0 +1,205 @@
+{
+  "id": "priknr1.heatingschedule",
+  "name": {
+    "en": "Heating Schedule",
+    "de": "Heizplan",
+    "nl": "Thermostaat Programma"
+  },
+  "description": {
+    "en": "Homey Heating Schedule",
+    "de": "Homey Heizplan",
+    "nl": "Homey Thermostaat Programma"
+  },
+  "version": "1.0.0",
+  "compatibility": "0.x || 1.x",
+  "author": {
+    "name": "Patrick van der Westen",
+    "email": "pvdwesten@hotmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Patrick van der Westen",
+        "email": "pvdwesten@hotmail.com"
+      }
+    ]
+  },
+  "images": {
+    "large": "./assets/images/large.jpg",
+    "small": "./assets/images/small.jpg"
+  },
+  "category": [
+    "tools",
+    "climate"
+  ],
+  "permissions": [],
+  "flow": {
+    "conditions": [
+      {
+        "id": "scheduleStateEnabled",
+        "title": {
+          "en": "Heating Schedule !{{is enabled|is disabled}}",
+          "de": "Heizplan !{{ist aktiviert|ist deaktiviert}}",
+          "nl": "Thermostaat Programma !{{is ingeschakeld||is uitgeschakeld}}"
+        }
+      },
+      {
+        "id": "zoneTemperature",
+        "title": {
+          "en": "Temperature !{{is greater than|is less than}}",
+          "de": "Temperatur !{{ist größer als|ist kleiner als}}",
+          "nl": "Temperatuur !{{boven||onder}}"
+        },
+        "args": [
+          {
+            "name": "zone",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Zone",
+              "de": "Zone",
+              "nl": "Zone"
+            }
+          },
+          {
+            "name": "action",
+            "type": "range",
+            "min": 4,
+            "max": 28,
+            "step": 0.5,
+            "labelDecimals": 1,
+            "label": "°"
+          }
+        ]
+      }
+    ],
+    "triggers": [
+      {
+        "id": "heatingThermostatTriggered",
+        "title": {
+          "en": "Thermostat triggered",
+          "de": "Thermostat wird aktualisiert",
+          "nl": "Thermostaat wordt aangepast"
+        },
+        "tokens": [
+          {
+            "name": "tokenDeviceTriggered",
+            "title": {
+              "en": "Thermostat",
+              "de": "Thermostat",
+              "nl": "Thermostaat"
+            },
+            "example": {
+              "en": "Livingroom: 20°",
+              "de": "Wohnzimmer: 20°",
+              "nl": "Woonkamer: 20°"
+            }
+          }
+        ]
+      },
+      {
+        "id": "heatingThermostatUpdated",
+        "title": {
+          "en": "Thermostat was updated",
+          "de": "Thermostat wurde aktualisiert",
+          "nl": "Thermostaat is aangepast"
+        },
+        "tokens": [
+          {
+            "name": "tokenDeviceUpdated",
+            "title": {
+              "en": "Thermostat",
+              "de": "Thermostat",
+              "nl": "Thermostaat"
+            },
+            "example": {
+              "en": "Bathroom: 22°",
+              "de": "Bad: 22°",
+              "nl": "Badkamer: 22°"
+            }
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "scheduleState",
+        "title": {
+          "en": "Heating Schedule",
+          "de": "Heizplan",
+          "nl": "Thermostaat Programma"
+        },
+        "args": [
+          {
+            "name": "enabled",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "enabled",
+                "label": {
+                  "en": "enabled",
+                  "de": "aktiviert",
+                  "nl": "ingeschakeld"
+                }
+              },
+              {
+                "id": "disabled",
+                "label": {
+                  "en": "disabled",
+                  "de": "deaktiviert",
+                  "nl": "uitgeschakeld"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "updateZoneTemperature",
+        "title": {
+          "en": "Update temperature",
+          "de": "Temperatur aktualisieren",
+          "nl": "Temperatuur update"
+        },
+        "args": [
+          {
+            "name": "zone",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Zone",
+              "de": "Zone",
+              "nl": "Zone"
+            }
+          },
+          {
+            "name": "action",
+            "type": "range",
+            "min": 4,
+            "max": 28,
+            "step": 0.5,
+            "labelDecimals": 1,
+            "label": "°"
+          }
+        ]
+      },
+      {
+        "id": "triggerLastZoneSchedule",
+        "title": {
+          "en": "Trigger last heating schedule",
+          "de": "Aktuellen Heizplan ausführen",
+          "nl": "Run huidige Thermostaat Programma"
+        },
+        "args": [
+          {
+            "name": "zone",
+            "type": "autocomplete",
+            "placeholder": {
+              "en": "Zone",
+              "de": "Zone",
+              "nl": "Zone"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
